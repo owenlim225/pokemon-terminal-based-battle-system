@@ -1,5 +1,9 @@
+# Limosnero, Sherwin P.
+# J2S <3
+
 from time import sleep
 import threading
+import random
 
 from rich import box
 from rich.align import Align
@@ -46,8 +50,9 @@ class Display:
         self.user_name = "Player"
         self.battle_no = 0
         self.user_final_power = 0
-        self.current_pokemon = "Pikachu"  # Initialize current Pokémon
+        self.current_pokemon = "Pikachu"  # Initialize current Pokemon
         self.battle_results = []  # Store battle results
+        self.title_name = ""
 
         self.layout["header"].update(header())
         self.layout["body"].update(self.main_window())
@@ -62,8 +67,8 @@ class Display:
         # Split layout into three
         layout.split(
             Layout(name="header", size=3),
-            Layout(name="main", ratio=1),
-            Layout(name="footer", size=10),
+            Layout(name="main", ratio=3),
+            Layout(name="footer", size=5),
         )
 
         # Split the main area into side and body
@@ -76,42 +81,146 @@ class Display:
             Layout(name="mechanics"))
         return layout
 
+
+
+    # When user input mali
+    def invalid_input(self) -> Panel:
+        title_name = ""
+        invalid_input = Table.grid(padding=1)
+        invalid_input.add_column(style="white", justify="center")
+        
+        invalid_input.add_row(
+            "[red]Invalid Input[/red]"
+        )
+        
+        
+        invalid_input.add_row(
+            "Please try again."
+        )
+
+        self.update_main_window(invalid_input, title_name)
+
+
+
     # Main window panel
     def main_window(self) -> Panel:
         main_window_dialogue = Table.grid(padding=1)
-        main_window_dialogue.add_column(style="blue", justify="center")
+        main_window_dialogue.add_column(style="white", justify="center")
         
         main_window_dialogue.add_row(
-            "Welcome to Pokemon Battle!"
+            "Welcome to [bright_blue]Pokemon[/bright_blue] [red]Battle![/red]"
         )
 
         main_window_dialogue.add_row(
-            "A quick Terminal-based game made by: Sherwin P. Limosnero!"
+            "A quick Terminal-based battle system game made by: [yellow]Sherwin P. Limosnero[/yellow] from [red]J2S![/red]"
         )
 
         main_window_dialogue.add_row(
-            "To play the game, refer to the buttons on your left side, type the letter then press enter to use!"
+            "To play the [green]game[/green], refer to the [bright_blue]buttons[/bright_blue] on your left side"
         )
 
         main_window_dialogue.add_row(
-            "First, select your Pokémon to battle by typing [N] then enter."
+            "type the letter then press [green]enter[/green] to use!"
         )
 
+        main_window_dialogue.add_row(
+            "For [yellow]first time players[/yellow], select your starting [green]Pokemon[/green] by typing [green][N][/green] then enter."
+        )
+
+
+        # Main_window_dialogue get passed here
         message = Table.grid(padding=1)
         message.add_column()
         message.add_column(no_wrap=True)
         message.add_row(main_window_dialogue)
 
+
+        # Then the message get passed here para makita sa body.
         message_panel = Panel(
             Align.center(
-                Group("\n", Align.center(main_window_dialogue)),
-                vertical="middle",
-            ),
-            box=box.ROUNDED,
-            padding=(1, 2),
-            border_style="bright_blue",
-        )
+                Group("\n", Align.center(main_window_dialogue))),
+                border_style="bright_blue")
         return message_panel
+
+
+
+    def update_main_window(self, content, title_name: str):
+        # Use the provided title_name instead of reassigning it
+        new_main_window = Table.grid(padding=1)
+        new_main_window.add_column(style="white", justify="center")
+        new_main_window.add_row(content)
+        
+        # Create the panel with the correct title
+        message_panel = Panel(
+            Align.center(
+                Group("\n", Align.center(new_main_window))),
+            title=title_name,  # Use the passed title_name here
+            border_style="bright_blue"
+        )
+        
+        # Directly update the body with the new message panel
+        self.layout["body"].update(message_panel)
+
+
+
+
+
+
+
+
+
+    def update_user_stats(self, user_name: str, battle_no: int, user_final_power: int, current_pokemon: str):
+        self.user_name = user_name
+        self.battle_no = battle_no
+        self.user_final_power = user_final_power
+        self.current_pokemon = current_pokemon
+        self.layout["user_detail"].update(self.user_stats())
+
+
+
+
+
+
+
+
+
+    def update_battle_results(self, results):
+        # Set the title for the battle records
+        title_name = "Battle Records"
+        
+        # Create the battle results table
+        table = Table()
+
+        table.add_column("Battle No.", justify="right", style="cyan", no_wrap=True)
+        table.add_column("User Power", justify="center", style="green")
+        table.add_column("CPU Power", justify="center", style="red")
+        table.add_column("Status", justify="center", style="green")
+
+        # Add rows to the table
+        for result in results:
+            table.add_row(str(result[0]), str(result[1]), str(result[2]), result[3])
+
+        # Update the main window with battle results, using the correct title
+        self.update_main_window(table, title_name)
+
+
+    def pokedex(self):
+        title_name = "Pokedex"
+
+        table = Table()
+
+        table.add_column("Name", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Power", justify="center", style="green")
+
+        for key, value in pokemon_char.items():
+            table.add_row(str(key), str(value))
+        
+        # Update the main window with battle results, using the correct title
+        self.update_main_window(table, title_name)
+
+
+
+
 
     # User stats ~ Mid Top Left
     def user_stats(self) -> Panel:
@@ -131,8 +240,8 @@ C. Pokemon  : {self.current_pokemon}
     def mechanics_buttons(self) -> Panel:
         content = """\
 [C] Continue    
-[S] Stats       
-[N] New Pokémon
+[P] Pokedex       
+[N] New Pokemon
 [B] Battle Records
 [X] Exit
         """
@@ -142,8 +251,17 @@ C. Pokemon  : {self.current_pokemon}
             padding=(1, 2)
         )
 
-    def battle_footer(self) -> Panel:
+    def battle_footer(self) -> Table:
+        # Create a Table with specific column widths
         battle_footer = Table.grid(expand=True)
+
+        # Set column widths
+        # Note: Adjust width values according to your requirement
+        column_widths = [20, 5, 20]  # Example widths for each column
+        for width in column_widths:
+            battle_footer.add_column(width=width, justify="center")
+
+        # Add rows with Panels
         battle_footer.add_row(
             Panel(
                 "working on it", 
@@ -151,6 +269,13 @@ C. Pokemon  : {self.current_pokemon}
                 border_style="green",  # Green border for Player layout
                 padding=(1, 2)
             ),
+
+            Panel(
+                "User win!", 
+                border_style="white",  # White border for result message
+                padding=(1, 1)
+            ),
+
             Panel(
                 "working on it", 
                 title="Computer", 
@@ -160,52 +285,16 @@ C. Pokemon  : {self.current_pokemon}
         )
         return battle_footer
 
-    def update_user_stats(self, user_name: str, battle_no: int, user_final_power: int, current_pokemon: str):
-        self.user_name = user_name
-        self.battle_no = battle_no
-        self.user_final_power = user_final_power
-        self.current_pokemon = current_pokemon
-        self.layout["user_detail"].update(self.user_stats())
 
-    def update_main_window(self, content: str):
-        """Update the main window with new content."""
-        new_main_window = Table.grid(padding=1)
-        new_main_window.add_column(style="green", justify="right")
-        new_main_window.add_column(no_wrap=True)
-        new_main_window.add_row(content)
-        
-        message_panel = Panel(
-            Align.center(
-                Group("\n", Align.center(new_main_window)),
-                vertical="middle",
-            ),
-            box=box.ROUNDED,
-            padding=(1, 2),
-            border_style="bright_blue",
-        )
-        self.layout["body"].update(message_panel)
 
-    def update_battle_results(self, results):
-        """Update battle results and display them."""
-        # Create the table
-        table = Table(title="Battle Results")
 
-        table.add_column("Battle No.", justify="right", style="cyan", no_wrap=True)
-        table.add_column("User Power", justify="center", style="green")
-        table.add_column("CPU Power", justify="center", style="red")
-        table.add_column("Status", justify="center", style="green")
-
-        # Add rows to the table
-        for result in results:
-            table.add_row(str(result[0]), str(result[1]), str(result[2]), result[3])
-
-        # Update the main window with battle results
-        self.update_main_window(table)
 
 class Mechanism:
     def __init__(self, display: Display):
         self.display = display
         self.console = Console()
+        self.first_time = True
+
 
     def get_user_input(self):
         global exit_flag
@@ -216,14 +305,17 @@ class Mechanism:
                 break
             elif user_input.lower() == 'c':
                 self.display.update_main_window("Continue selected")
-            elif user_input.lower() == 's':
-                self.display.update_main_window(f"Stats: {self.display.user_name}, {self.display.battle_no}, {self.display.user_final_power}, {self.display.current_pokemon}")
+            elif user_input.lower() == 'p':
+                self.display.pokedex()
             elif user_input.lower() == 'n':
-                self.display.update_main_window("New Pokémon selected")
+                self.display.update_main_window("New Pokemon selected")
             elif user_input.lower() == 'b':
                 self.display.update_battle_results(self.get_battle_results())
             else:
-                self.display.update_main_window("Invalid input")
+                self.display.invalid_input()
+
+
+
 
     def get_battle_results(self):
         # Sample results
@@ -231,9 +323,31 @@ class Mechanism:
         results = [
             (1, 120, 110, "Player wins"),
             (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
+            (3, 150, 150, "Draw"),
+            (1, 120, 110, "Player wins"),
+            (2, 130, 140, "CPU wins"),
             (3, 150, 150, "Draw")
         ]
         return results
+
 
 
     def Choose_Pokemon(self):
@@ -311,7 +425,7 @@ mechanism = Mechanism(display)
 input_thread = threading.Thread(target=mechanism.get_user_input, daemon=True)
 input_thread.start()
 
-with Live(display.layout, refresh_per_second=1, screen=True):
+with Live(display.layout, refresh_per_second=30, screen=True):
     while not exit_flag:
         sleep(0.5)
         display.battle_footer()
