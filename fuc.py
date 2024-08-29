@@ -124,9 +124,12 @@ class Display:
         )
 
         main_window_dialogue.add_row(
-            "For [yellow]first time players[/yellow], select your starting [green]Pokemon[/green] by typing [green][N][/green] then enter."
+            "For [yellow]first time players[/yellow], input [green][Q][/green] to show [green]Stats and buttons[/green]."
         )
 
+        main_window_dialogue.add_row(
+            "To select your starting [green]Pokemon[/green] by typing [green][S][/green] then enter."
+        )
 
         # Main_window_dialogue get passed here
         message = Table.grid(padding=1)
@@ -194,14 +197,34 @@ class Display:
         table.add_column("Battle No.", justify="right", style="cyan", no_wrap=True)
         table.add_column("User Power", justify="center", style="green")
         table.add_column("CPU Power", justify="center", style="red")
-        table.add_column("Status", justify="center", style="green")
+        table.add_column("Status", justify="center", style="green", min_width=20, max_width=50)
 
         # Add rows to the table
         for result in results:
             table.add_row(str(result[0]), str(result[1]), str(result[2]), result[3])
 
-        # Update the main window with battle results, using the correct title
-        self.update_main_window(table, title_name)
+
+        # Create the panel with the correct title
+        message_panel = Panel(
+            Align.center(
+                Group("\n", Align.center(table))),
+            title=title_name,  # Use the passed title_name here
+            border_style="bright_blue"
+        )
+        
+        # Directly update the body with the new message panel
+        self.layout["body"].update(message_panel)
+        self.layout["footer"].visible = False
+
+
+
+
+
+
+
+
+
+
 
 
     def pokedex(self):
@@ -214,11 +237,27 @@ class Display:
 
         for key, value in pokemon_char.items():
             table.add_row(str(key), str(value))
-        
+
         # Update the main window with battle results, using the correct title
         self.update_main_window(table, title_name)
+        
 
 
+    def select_pokemon(self):
+        title_name = "Select Pokemon"
+
+        table = Table()
+
+        table.add_column("Num", justify="center", style="green")
+        table.add_column("Name", justify="center", style="cyan", no_wrap=True)
+        table.add_column("Base power", justify="center", style="green")
+
+        # Iterate through pokemon_char dictionary and add rows to the table
+        for count, (key, value) in enumerate(pokemon_char.items(), start=1):
+            table.add_row(str(count), key, str(value))
+
+        # Update the main window with the table and title
+        self.update_main_window(table, title_name)
 
 
 
@@ -241,7 +280,7 @@ C. Pokemon  : {self.current_pokemon}
         content = """\
 [C] Continue    
 [P] Pokedex       
-[N] New Pokemon
+[S] Select Pokemon
 [B] Battle Records
 [X] Exit
         """
@@ -294,25 +333,45 @@ class Mechanism:
         self.display = display
         self.console = Console()
         self.first_time = True
+        self.selecting_pokemon = False 
 
 
     def get_user_input(self):
         global exit_flag
+        self.display.layout["side"].visible = False
+        self.display.layout["footer"].visible = False
+
         while True:
             user_input = input()
             if user_input.lower() == 'x':
                 exit_flag = True
                 break
+
             elif user_input.lower() == 'c':
                 self.display.update_main_window("Continue selected")
+
             elif user_input.lower() == 'p':
                 self.display.pokedex()
-            elif user_input.lower() == 'n':
-                self.display.update_main_window("New Pokemon selected")
+
+            elif user_input.lower() == 'q':
+                self.display.layout["side"].visible = True
+
+            elif user_input.lower() == 's':
+                self.display.select_pokemon()
+                self.display.layout["footer"].visible = True
+                self.selecting_pokemon = True  # Set to True when selecting Pokemon
+
             elif user_input.lower() == 'b':
                 self.display.update_battle_results(self.get_battle_results())
+                
+            elif self.selecting_pokemon and user_input.isdigit():
+                self.display.handle_pokemon_number(int(user_input))  # Handle number input
             else:
                 self.display.invalid_input()
+
+            if not self.selecting_pokemon:
+                self.selecting_pokemon = False
+                
 
 
 
@@ -324,27 +383,13 @@ class Mechanism:
             (1, 120, 110, "Player wins"),
             (2, 130, 140, "CPU wins"),
             (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw"),
-            (1, 120, 110, "Player wins"),
-            (2, 130, 140, "CPU wins"),
-            (3, 150, 150, "Draw")
+            (4, 120, 110, "Player wins"),
+            (5, 130, 140, "CPU wins"),
+            (6, 150, 150, "Draw"),
+            (7, 120, 110, "Player wins"),
+            (8, 130, 140, "CPU wins"),
+            (9, 150, 150, "Draw"),
+            (10, 120, 110, "Player wins")
         ]
         return results
 
