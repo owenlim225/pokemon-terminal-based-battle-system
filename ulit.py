@@ -24,7 +24,6 @@ class Game:
         self.current_pokemon = []
         self.battle_results = []
 
-        self.computer_current_pokemon = []
         self.computer_final_power = 0
 
     # Working ✅
@@ -37,7 +36,7 @@ class Game:
     # Working ✅
     def pokedex(self):
         os.system('cls') # Taga linis ng terminal
-        print("----- Player Status ----------")
+        print("----- Pokedex ----------")
         print("")
         print(f"Pokemon\t\t Base power")
         for count, (key, value) in enumerate(pokemon_char.items(), start=1):
@@ -53,18 +52,18 @@ class Game:
         pokemon_list = list(pokemon_char.keys())
         computer_pokemon = random.choice(pokemon_list)
 
-        self.computer_current_pokemon = computer_pokemon
-        self.computer_final_power, randVar = self.calculate_final_power(pokemon_char[computer_pokemon])
+        computer_current_pokemon = computer_pokemon
+        computer_final_power, randVar = self.calculate_final_power(pokemon_char[computer_pokemon])
 
 
         print(f"Computer choose: {computer_pokemon}")
 
-        computer_pokemon = pokemon_char[computer_pokemon]
+        computer_pokemon_base_power = pokemon_char[computer_pokemon]
         print(f"\n\nComputer power: {computer_pokemon} base power + {randVar} blessings")
-        print(f"Computer Final power: {self.computer_final_power}")
+        print(f"Computer Final power: {computer_final_power}")
         
-        self.battle(self.user_final_power, self.computer_final_power)
-        
+        self.battle(self.user_final_power, computer_final_power, computer_current_pokemon)
+        return computer_final_power, computer_current_pokemon, computer_pokemon_base_power
         
     
 
@@ -122,60 +121,70 @@ class Game:
 
 
     # Working ✅
-    def battle(self, user_final_power, computer_final_power):
+    def battle(self, user_final_power, computer_final_power, computer_current_pokemon):
         self.battle_no += 1
 
-        print(f"""
------ Battle {self.battle_no}  ----------
-              
-    User: {self.current_pokemon} vs {self.computer_current_pokemon} : computer
-    final power: {self.user_final_power} vs {self.computer_final_power} : computer
-
-""")
         
 
-        # Working ✅
-        if user_final_power > computer_final_power: # Pag panalo ka
-            user_final_power += computer_final_power
-            print(f"You win!\n")
-            print("-------------------------")
+    
+        
+        print(f"------------------- Battle {self.battle_no}  -------------------")
+        print("User\t\t\tComputer")
+        print(f"self.current_pokemon \tvs\t{computer_current_pokemon}")
+
+        if self.user_final_power >= 100 or self.battle_no >= 5: # PANG PA BALANCEEEEEEEEEE
+            computer_final_power += self.user_final_power // 4
+        elif self.user_final_power >= 500 and self.battle_no >= 5: # PANG PA BALANCEEEEEEEEEE
+            computer_final_power += self.user_final_power //2
+
+
+        print(f"{user_final_power}\t\t{computer_final_power}")
+
+        
+        
+
+
+        # SINO PANALO EWAN
+        if user_final_power > computer_final_power:  # User wins
+            result = "User"
+            print(f"\t\t      You win!\n")
+            print("--------------------------------------------------")
             print("")
             print(f"Your pokemon gained {computer_final_power} power")
-            print(f"current final power: {user_final_power}\n")
+            print(f"Current final power: {user_final_power + computer_final_power}\n")
             print("")
-            print("-------------------------")
-            
-            self.run()
+            print("--------------------------------------------------")
+            user_final_power += computer_final_power
+            self.user_final_power = user_final_power
 
-        # Working ✅
-        elif user_final_power < computer_final_power: # Pag talo ka
-            computer_final_power +=  user_final_power
-            user_final_power = 0
-            print(f"You Lose.\n")
-            print("-------------------------")
+        elif user_final_power < computer_final_power:  # User loses
+            result = "CPU"
+            print(f"\t\t   You Lose.\n")
+            print("--------------------------------------------------")
             print("")
             print(f"Your pokemon lost {user_final_power} power")
             print(f"Computer current final power: {computer_final_power}\n")
             print("")
-            print("-------------------------")
+            print("--------------------------------------------------")
+            self.user_final_power = 0
+            computer_final_power += user_final_power
 
-            self.run()
-
-        # Working ✅    
-        else:
-            print(f"It's a Tie.\n") # Pag tie
-            print("-------------------------")
+        else:  # Tie
+            result = "-"
+            print(f"\t\t\tIt's a Tie.\n")  # It's a tie
+            print("--------------------------------------------------")
             print("")
             print(f"Your power remains")
             print("")
-            print("-------------------------")
-            self.run()
+            print("--------------------------------------------------")
 
-
+        # Record the battle result (using the original values before updates)
+        self.battle_results.append((self.battle_no, user_final_power, computer_final_power, result))
+        self.run()
 
      # Working ✅
     def battle_records(self):
-        os.system('cls') # Taga linis ng terminal
+        os.system('cls')  # Clear the terminal
         print("----- Battle records ----------")
         print("")
         print("")
@@ -190,7 +199,6 @@ class Game:
                 print(f" [{str(result[0])}] \t    {str(result[1])}\t\t   {str(result[2])} \t\t {result[3]}")
         print("")
         print("-------------------------")
-
 
     # Working ✅    
     def intro(self):
@@ -244,11 +252,10 @@ class Game:
 
             if user_input == "c":
                 if self.current_pokemon:
-                    self.battle(self.user_final_power, self.computer_final_power)
+                    computer_final_power, computer_current_pokemon = self.computer_pokemon()
+                    self.battle(self.user_final_power, computer_final_power, computer_current_pokemon)
                 else:
-                    os.system('cls') # Taga linis ng terminal
                     print("\nPlease choose your pokemon first.\n")
-                    self.run()
             
             elif user_input == "n":
                 self.select_user_pokemon()

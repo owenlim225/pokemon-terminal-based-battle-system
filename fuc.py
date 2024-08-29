@@ -365,7 +365,8 @@ class Mechanism:
                 self.display.update_battle_results(self.get_battle_results())
                 
             elif self.selecting_pokemon and user_input.isdigit():
-                self.display.handle_pokemon_number(int(user_input))  # Handle number input
+                7
+                (int(user_input))  # Handle number input
             else:
                 self.display.invalid_input()
 
