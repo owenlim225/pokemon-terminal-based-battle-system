@@ -130,15 +130,30 @@ class Game:
         
         print(f"------------------- Battle {self.battle_no}  -------------------")
         print("User\t\t\tComputer")
-        print(f"self.current_pokemon \tvs\t{computer_current_pokemon}")
+        print(f"{self.current_pokemon} \tvs\t{computer_current_pokemon}")
 
-        if self.user_final_power >= 100 or self.battle_no >= 5: # PANG PA BALANCEEEEEEEEEE
-            computer_final_power += self.user_final_power // 4
-        elif self.user_final_power >= 500 and self.battle_no >= 5: # PANG PA BALANCEEEEEEEEEE
-            computer_final_power += self.user_final_power //2
+        original_computer_power = self.computer_final_power
 
+        if self.user_final_power >= 100:
+            # Add user power to computer power and adjust user power
+            self.computer_final_power += int(self.user_final_power)
+            self.user_final_power -= int(self.user_final_power * 0.5)
+            
+            print("\nYour Pokémon feel tired from fighting. -50% power lost.\n")
+            print(f"Player final power: {self.user_final_power}")
 
-        print(f"{user_final_power}\t\t{computer_final_power}")
+            # Calculate and apply percentage increase based on the original power
+            computer_add_power_percentage = int(((computer_final_power/self.user_final_power)*100)/4)
+            print(f"\nEnemies start getting stronger. +{computer_add_power_percentage}% power\n")
+            print(f"Computer final power: {computer_final_power}")
+        
+        else:
+            # Restore the computer's original power
+            self.computer_final_power = original_computer_power
+            print("\nNo adjustment needed. Computer power remains the same.\n")
+            print(f"Computer final power: {self.computer_final_power}")
+
+        print(f"\nuser: {user_final_power}  vs   computer: {computer_final_power}\n")
 
         
         
