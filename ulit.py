@@ -134,26 +134,11 @@ class Game:
 
         original_computer_power = self.computer_final_power
 
-        if self.user_final_power >= 100:
-            # Add user power to computer power and adjust user power
-            self.computer_final_power += int(self.user_final_power)
-            self.user_final_power -= int(self.user_final_power * 0.5)
-            
-            print("\nYour Pokémon feel tired from fighting. -50% power lost.\n")
-            print(f"Player final power: {self.user_final_power}")
-
-            # Calculate and apply percentage increase based on the original power
-            computer_add_power_percentage = int(((computer_final_power/self.user_final_power)*100)/4)
-            print(f"\nEnemies start getting stronger. +{computer_add_power_percentage}% power\n")
-            print(f"Computer final power: {computer_final_power}")
         
-        else:
-            # Restore the computer's original power
-            self.computer_final_power = original_computer_power
-            print("\nNo adjustment needed. Computer power remains the same.\n")
-            print(f"Computer final power: {self.computer_final_power}")
 
-        print(f"\nuser: {user_final_power}  vs   computer: {computer_final_power}\n")
+            
+        
+    
 
         
         
@@ -172,6 +157,26 @@ class Game:
             user_final_power += computer_final_power
             self.user_final_power = user_final_power
 
+        if self.user_final_power >= 100:
+            # Add user power to computer power and adjust user power
+            self.computer_final_power += int(self.user_final_power)
+            self.user_final_power -= int(self.user_final_power * 0.5)
+            
+            print("\nYour Pokémon feel tired from fighting. -50% power lost.\n")
+            print(f"Player final power: {self.user_final_power}")
+            
+            # Calculate and apply percentage increase based on the original power
+            computer_add_power_percentage = int(((computer_final_power/self.user_final_power)*100)/4)
+            print(f"\nEnemies start getting stronger. +{computer_add_power_percentage}% power\n")
+            print(f"Computer final power: {computer_final_power}")
+            
+            if self.user_final_power >= 500:
+                self.user_final_power = 0
+                print("\nYour Pokémon DIED from overpowering. -100% power lost.\n")
+                print(f"Player final power: {self.user_final_power}")
+
+
+
         elif user_final_power < computer_final_power:  # User loses
             result = "CPU"
             print(f"\t\t   You Lose.\n")
@@ -181,8 +186,10 @@ class Game:
             print(f"Computer current final power: {computer_final_power}\n")
             print("")
             print("--------------------------------------------------")
-            self.user_final_power = 0
             computer_final_power += user_final_power
+        
+            
+            
 
         else:  # Tie
             result = "-"
@@ -218,6 +225,7 @@ class Game:
     # Working ✅    
     def intro(self):
         print("\t\tWelcome to pokemon battle!\n\nA terminal based battle system made by Sherwin P. Limosnero from J2S.\n")
+        print("Before every battle, pokemons will receive random blessing that will added to their base power.")
         print("For new players, choose a button to input then press enter.")
 
         self.run()
