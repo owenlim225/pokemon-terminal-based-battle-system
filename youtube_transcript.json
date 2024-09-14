@@ -1,0 +1,792 @@
+[
+  {
+    "text": "OSI stands for open systems",
+    "start": 2.76,
+    "duration": 5.34
+  },
+  {
+    "text": "interconnection and is a conceptual",
+    "start": 5.52,
+    "duration": 4.26
+  },
+  {
+    "text": "framework for how applications",
+    "start": 8.1,
+    "duration": 4.5
+  },
+  {
+    "text": "communicate over a network there are",
+    "start": 9.78,
+    "duration": 5.279
+  },
+  {
+    "text": "seven layers within the model in the",
+    "start": 12.6,
+    "duration": 4.59
+  },
+  {
+    "text": "layers depiction is used to help users",
+    "start": 15.059,
+    "duration": 4.62
+  },
+  {
+    "text": "identify what is happening within a",
+    "start": 17.19,
+    "duration": 5.48
+  },
+  {
+    "text": "networking system",
+    "start": 19.679,
+    "duration": 2.991
+  },
+  {
+    "text": "[Music]",
+    "start": 24.61,
+    "duration": 12.99
+  },
+  {
+    "text": "before we get started on today's video",
+    "start": 34.98,
+    "duration": 5.5
+  },
+  {
+    "text": "if you love our videos be sure to click",
+    "start": 37.6,
+    "duration": 5.67
+  },
+  {
+    "text": "the like button below then make sure to",
+    "start": 40.48,
+    "duration": 5.52
+  },
+  {
+    "text": "click Subscribe and the little bell to",
+    "start": 43.27,
+    "duration": 4.92
+  },
+  {
+    "text": "receive notifications of new real Parrs",
+    "start": 46.0,
+    "duration": 5.07
+  },
+  {
+    "text": "videos this way you never miss another",
+    "start": 48.19,
+    "duration": 5.18
+  },
+  {
+    "text": "one",
+    "start": 51.07,
+    "duration": 2.3
+  },
+  {
+    "text": "the OSI model layers are typically",
+    "start": 54.28,
+    "duration": 5.459
+  },
+  {
+    "text": "described from the top layer down the",
+    "start": 56.86,
+    "duration": 6.08
+  },
+  {
+    "text": "layers are described as application",
+    "start": 59.739,
+    "duration": 7.74
+  },
+  {
+    "text": "presentation session transport network",
+    "start": 62.94,
+    "duration": 8.249
+  },
+  {
+    "text": "data link and physical",
+    "start": 67.479,
+    "duration": 5.96
+  },
+  {
+    "text": "these layers are provided by a mixture",
+    "start": 71.189,
+    "duration": 5.161
+  },
+  {
+    "text": "of network car drivers operating systems",
+    "start": 73.439,
+    "duration": 5.911
+  },
+  {
+    "text": "applications and networking hardware",
+    "start": 76.35,
+    "duration": 5.189
+  },
+  {
+    "text": "that facilitate the transmission of",
+    "start": 79.35,
+    "duration": 5.609
+  },
+  {
+    "text": "signals over Ethernet fiber-optic Wi-Fi",
+    "start": 81.539,
+    "duration": 7.28
+  },
+  {
+    "text": "or other wireless protocols",
+    "start": 84.959,
+    "duration": 3.86
+  },
+  {
+    "text": "will describe the layers from the top",
+    "start": 88.9,
+    "duration": 5.46
+  },
+  {
+    "text": "down as the top layer is the application",
+    "start": 91.09,
+    "duration": 6.93
+  },
+  {
+    "text": "layer or layer 7 this is the layer that",
+    "start": 94.36,
+    "duration": 6.18
+  },
+  {
+    "text": "most users interact with and will",
+    "start": 98.02,
+    "duration": 5.58
+  },
+  {
+    "text": "recognize the application layer provides",
+    "start": 100.54,
+    "duration": 6.84
+  },
+  {
+    "text": "network services to the end-user these",
+    "start": 103.6,
+    "duration": 6.21
+  },
+  {
+    "text": "services are protocols that work with",
+    "start": 107.38,
+    "duration": 5.61
+  },
+  {
+    "text": "the data the client is using one of",
+    "start": 109.81,
+    "duration": 6.75
+  },
+  {
+    "text": "these protocols may be HTTP that is used",
+    "start": 112.99,
+    "duration": 5.36
+  },
+  {
+    "text": "with web browsers such as Google Chrome",
+    "start": 116.56,
+    "duration": 6.15
+  },
+  {
+    "text": "Firefox and Internet Explorer other",
+    "start": 118.35,
+    "duration": 6.64
+  },
+  {
+    "text": "examples of applications that use this",
+    "start": 122.71,
+    "duration": 6.95
+  },
+  {
+    "text": "layer are Office Outlook and Skype",
+    "start": 124.99,
+    "duration": 6.95
+  },
+  {
+    "text": "all of those interactive applications",
+    "start": 129.66,
+    "duration": 4.89
+  },
+  {
+    "text": "provide a set of services that allow the",
+    "start": 131.94,
+    "duration": 5.61
+  },
+  {
+    "text": "application layer to supply data to and",
+    "start": 134.55,
+    "duration": 8.15
+  },
+  {
+    "text": "receive data from the presentation layer",
+    "start": 137.55,
+    "duration": 5.15
+  },
+  {
+    "text": "the presentation layer or layer six",
+    "start": 143.319,
+    "duration": 5.611
+  },
+  {
+    "text": "performs the uncomplicated task of",
+    "start": 146.159,
+    "duration": 5.83
+  },
+  {
+    "text": "syntax processing or converting data",
+    "start": 148.93,
+    "duration": 6.619
+  },
+  {
+    "text": "from one format to another for example",
+    "start": 151.989,
+    "duration": 5.941
+  },
+  {
+    "text": "consider you're ordering something from",
+    "start": 155.549,
+    "duration": 5.321
+  },
+  {
+    "text": "an online store these transactions are",
+    "start": 157.93,
+    "duration": 4.44
+  },
+  {
+    "text": "typically handled in a secure",
+    "start": 160.87,
+    "duration": 3.959
+  },
+  {
+    "text": "transmission which means that the data",
+    "start": 162.37,
+    "duration": 4.949
+  },
+  {
+    "text": "passing between the store or the website",
+    "start": 164.829,
+    "duration": 5.61
+  },
+  {
+    "text": "application will transmit encrypted data",
+    "start": 167.319,
+    "duration": 5.491
+  },
+  {
+    "text": "to the presentation layer that will need",
+    "start": 170.439,
+    "duration": 6.541
+  },
+  {
+    "text": "to be decrypted and processed this layer",
+    "start": 172.81,
+    "duration": 6.569
+  },
+  {
+    "text": "handles translating the data from the",
+    "start": 176.98,
+    "duration": 4.589
+  },
+  {
+    "text": "top layer which is presented in",
+    "start": 179.379,
+    "duration": 5.31
+  },
+  {
+    "text": "application format to network format and",
+    "start": 181.569,
+    "duration": 6.061
+  },
+  {
+    "text": "vice versa",
+    "start": 184.689,
+    "duration": 5.581
+  },
+  {
+    "text": "after the presentation layer processes",
+    "start": 187.63,
+    "duration": 5.52
+  },
+  {
+    "text": "the data from one format to another the",
+    "start": 190.27,
+    "duration": 4.62
+  },
+  {
+    "text": "information is then passed to the",
+    "start": 193.15,
+    "duration": 4.17
+  },
+  {
+    "text": "session layer or the application layer",
+    "start": 194.89,
+    "duration": 4.58
+  },
+  {
+    "text": "depending on whether the data is",
+    "start": 197.32,
+    "duration": 5.57
+  },
+  {
+    "text": "transmitting or receiving",
+    "start": 199.47,
+    "duration": 3.42
+  },
+  {
+    "text": "at the session layer or layer five the",
+    "start": 204.21,
+    "duration": 6.27
+  },
+  {
+    "text": "construction direction and conclusion of",
+    "start": 207.27,
+    "duration": 7.02
+  },
+  {
+    "text": "connections between devices occur this",
+    "start": 210.48,
+    "duration": 5.7
+  },
+  {
+    "text": "layer supports multiple types of",
+    "start": 214.29,
+    "duration": 3.78
+  },
+  {
+    "text": "connections as well as being responsible",
+    "start": 216.18,
+    "duration": 5.34
+  },
+  {
+    "text": "for authentication and reconnection if a",
+    "start": 218.07,
+    "duration": 6.81
+  },
+  {
+    "text": "network interruption should occur after",
+    "start": 221.52,
+    "duration": 5.79
+  },
+  {
+    "text": "the session is established the data then",
+    "start": 224.88,
+    "duration": 7.61
+  },
+  {
+    "text": "passes to or from the transport layer",
+    "start": 227.31,
+    "duration": 5.18
+  },
+  {
+    "text": "the transport layer or layer 4 is",
+    "start": 232.74,
+    "duration": 5.16
+  },
+  {
+    "text": "responsible for the transmission of data",
+    "start": 235.74,
+    "duration": 5.49
+  },
+  {
+    "text": "across network connections this layer",
+    "start": 237.9,
+    "duration": 5.94
+  },
+  {
+    "text": "coordinates how much data to send how",
+    "start": 241.23,
+    "duration": 5.76
+  },
+  {
+    "text": "fast where it goes and these sorts of",
+    "start": 243.84,
+    "duration": 4.77
+  },
+  {
+    "text": "things",
+    "start": 246.99,
+    "duration": 4.08
+  },
+  {
+    "text": "of the most widely known protocols for",
+    "start": 248.61,
+    "duration": 5.43
+  },
+  {
+    "text": "internet applications these services may",
+    "start": 251.07,
+    "duration": 4.949
+  },
+  {
+    "text": "be provided by transmission control",
+    "start": 254.04,
+    "duration": 5.699
+  },
+  {
+    "text": "protocol or TCP and user Datagram",
+    "start": 256.019,
+    "duration": 7.831
+  },
+  {
+    "text": "protocol or UDP other protocols may",
+    "start": 259.739,
+    "duration": 5.811
+  },
+  {
+    "text": "provide additional capabilities",
+    "start": 263.85,
+    "duration": 5.45
+  },
+  {
+    "text": "including error recovery data flow and",
+    "start": 265.55,
+    "duration": 7.21
+  },
+  {
+    "text": "retransmission once the transport layer",
+    "start": 269.3,
+    "duration": 6.34
+  },
+  {
+    "text": "has completed its function the data is",
+    "start": 272.76,
+    "duration": 7.88
+  },
+  {
+    "text": "then passed to or from the network layer",
+    "start": 275.64,
+    "duration": 5.0
+  },
+  {
+    "text": "the network layer or layer three handles",
+    "start": 280.95,
+    "duration": 6.24
+  },
+  {
+    "text": "the routing of the data after the data",
+    "start": 284.16,
+    "duration": 5.82
+  },
+  {
+    "text": "arrives at this layer each frame of data",
+    "start": 287.19,
+    "duration": 5.07
+  },
+  {
+    "text": "is examined to conclude if the data has",
+    "start": 289.98,
+    "duration": 5.1
+  },
+  {
+    "text": "reached its ultimate target the layer",
+    "start": 292.26,
+    "duration": 5.25
+  },
+  {
+    "text": "sends data to the correct destination on",
+    "start": 295.08,
+    "duration": 5.16
+  },
+  {
+    "text": "outgoing transmissions and receives",
+    "start": 297.51,
+    "duration": 5.7
+  },
+  {
+    "text": "incoming transmissions as well the IP",
+    "start": 300.24,
+    "duration": 6.87
+  },
+  {
+    "text": "portion of tcp/ip is the commonly known",
+    "start": 303.21,
+    "duration": 7.05
+  },
+  {
+    "text": "network layer for the Internet",
+    "start": 307.11,
+    "duration": 5.82
+  },
+  {
+    "text": "this layer also manages the mapping",
+    "start": 310.26,
+    "duration": 5.37
+  },
+  {
+    "text": "between logical addresses and physical",
+    "start": 312.93,
+    "duration": 5.79
+  },
+  {
+    "text": "addresses for IP addresses this is",
+    "start": 315.63,
+    "duration": 4.8
+  },
+  {
+    "text": "accomplished through address resolution",
+    "start": 318.72,
+    "duration": 6.66
+  },
+  {
+    "text": "protocol or ARP the data is then passed",
+    "start": 320.43,
+    "duration": 7.5
+  },
+  {
+    "text": "to the next required layer which is the",
+    "start": 325.38,
+    "duration": 5.21
+  },
+  {
+    "text": "data link layer",
+    "start": 327.93,
+    "duration": 2.66
+  },
+  {
+    "text": "the datalink layer or layer two is",
+    "start": 330.65,
+    "duration": 5.25
+  },
+  {
+    "text": "considered the most complex of the",
+    "start": 333.71,
+    "duration": 5.34
+  },
+  {
+    "text": "layers this layer is often divided into",
+    "start": 335.9,
+    "duration": 5.46
+  },
+  {
+    "text": "sub layers called media access control",
+    "start": 339.05,
+    "duration": 7.399
+  },
+  {
+    "text": "or mac and logical link control or LLC",
+    "start": 341.36,
+    "duration": 7.92
+  },
+  {
+    "text": "the layer sets up links across the",
+    "start": 346.449,
+    "duration": 5.021
+  },
+  {
+    "text": "physical network when this layer",
+    "start": 349.28,
+    "duration": 4.62
+  },
+  {
+    "text": "receives data from the physical layer it",
+    "start": 351.47,
+    "duration": 5.16
+  },
+  {
+    "text": "checks for transmission errors and then",
+    "start": 353.9,
+    "duration": 6.239
+  },
+  {
+    "text": "packages the bits into data frames from",
+    "start": 356.63,
+    "duration": 5.94
+  },
+  {
+    "text": "there this layer manages the physical",
+    "start": 360.139,
+    "duration": 5.28
+  },
+  {
+    "text": "addressing methods for the mac or LLC",
+    "start": 362.57,
+    "duration": 5.879
+  },
+  {
+    "text": "layers an example of the mac layer",
+    "start": 365.419,
+    "duration": 7.351
+  },
+  {
+    "text": "includes 802.11 Wireless specifications",
+    "start": 368.449,
+    "duration": 7.031
+  },
+  {
+    "text": "as well as Ethernet",
+    "start": 372.77,
+    "duration": 5.53
+  },
+  {
+    "text": "at the data link layer the data passes",
+    "start": 375.48,
+    "duration": 5.61
+  },
+  {
+    "text": "to or from the final layer in the OSI",
+    "start": 378.3,
+    "duration": 7.19
+  },
+  {
+    "text": "model which is the physical layer",
+    "start": 381.09,
+    "duration": 4.4
+  },
+  {
+    "text": "the physical layer or layer one is the",
+    "start": 386.03,
+    "duration": 5.16
+  },
+  {
+    "text": "electrical or physical layer of the",
+    "start": 389.09,
+    "duration": 5.19
+  },
+  {
+    "text": "model this layer encompasses the network",
+    "start": 391.19,
+    "duration": 6.27
+  },
+  {
+    "text": "cables power plugs cable pinouts",
+    "start": 394.28,
+    "duration": 6.35
+  },
+  {
+    "text": "wireless radio frequencies connectors",
+    "start": 397.46,
+    "duration": 7.53
+  },
+  {
+    "text": "transceivers receivers repeaters pulses",
+    "start": 400.63,
+    "duration": 8.59
+  },
+  {
+    "text": "of light electric voltages etc",
+    "start": 404.99,
+    "duration": 6.72
+  },
+  {
+    "text": "when troubleshooting problems this is",
+    "start": 409.22,
+    "duration": 4.91
+  },
+  {
+    "text": "typically the first place to start is",
+    "start": 411.71,
+    "duration": 5.88
+  },
+  {
+    "text": "the device plugged in is the wireless",
+    "start": 414.13,
+    "duration": 6.39
+  },
+  {
+    "text": "card working",
+    "start": 417.59,
+    "duration": 2.93
+  },
+  {
+    "text": "at this layer the model transmits the",
+    "start": 420.71,
+    "duration": 4.68
+  },
+  {
+    "text": "digital data bits from the source or",
+    "start": 423.35,
+    "duration": 4.83
+  },
+  {
+    "text": "sending devices physical layer over",
+    "start": 425.39,
+    "duration": 5.25
+  },
+  {
+    "text": "network communications media which can",
+    "start": 428.18,
+    "duration": 5.94
+  },
+  {
+    "text": "be electrical mechanical or radio to the",
+    "start": 430.64,
+    "duration": 5.73
+  },
+  {
+    "text": "receiving or destination devices",
+    "start": 434.12,
+    "duration": 4.97
+  },
+  {
+    "text": "physical layer",
+    "start": 436.37,
+    "duration": 2.72
+  },
+  {
+    "text": "the OSI model is a guide for developers",
+    "start": 439.33,
+    "duration": 5.339
+  },
+  {
+    "text": "and vendors to smooth the progress of",
+    "start": 442.09,
+    "duration": 4.56
+  },
+  {
+    "text": "developing communication products and",
+    "start": 444.669,
+    "duration": 4.201
+  },
+  {
+    "text": "software programs that will work in",
+    "start": 446.65,
+    "duration": 4.41
+  },
+  {
+    "text": "cooperation with a commonly established",
+    "start": 448.87,
+    "duration": 5.579
+  },
+  {
+    "text": "model once you understand the model you",
+    "start": 451.06,
+    "duration": 5.49
+  },
+  {
+    "text": "can then understand which protocols and",
+    "start": 454.449,
+    "duration": 4.951
+  },
+  {
+    "text": "devices will be compatible with one",
+    "start": 456.55,
+    "duration": 4.88
+  },
+  {
+    "text": "another",
+    "start": 459.4,
+    "duration": 2.03
+  },
+  {
+    "text": "want to learn",
+    "start": 464.919,
+    "duration": 4.291
+  },
+  {
+    "text": "see programming in an easy-to-understand",
+    "start": 466.66,
+    "duration": 5.04
+  },
+  {
+    "text": "format and take your career to the next",
+    "start": 469.21,
+    "duration": 7.45
+  },
+  {
+    "text": "level head on over to real parse com",
+    "start": 471.7,
+    "duration": 32.189
+  },
+  {
+    "text": "[Music]",
+    "start": 476.66,
+    "duration": 27.229
+  }
+]
