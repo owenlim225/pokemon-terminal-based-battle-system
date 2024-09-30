@@ -1,154 +1,84 @@
-import random
+#Limosnero, Sherwin P.
+# J2S
+# Machine Problem #1M
+
 import os
-from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
 
-pokemon_char = {
-    "Mewtwo": 90,
-    "Snorlax": 80,
-    "Machamp": 75,
-    "Gengar": 70,
-    "Bulbasaur": 60,
-    "Squirtle": 58,
-    "Charmander": 55,
-    "Eevee": 52,
-    "Pikachu": 50,
-    "Jigglypuff": 45,
-}
-
-class UI:
+class Mechanics:
     def __init__(self):
-        self.console = Console()
-        self.user_name = ""
-        self.battle_results = []
-
-    def Intro(self):
-        content = """
-        Welcome to Pokemon battle!
-        Made by: Sherwin P. Limosnero
-
-        What is your name?
-        """
-
-        # Print the panel using rich
-        panel = Panel(content.strip(), border_style="bold", expand=False)
-        self.console.print(panel)
-
-        self.user_name = input("Your name: ")
-        welcome_message = f"Welcome {self.user_name}! Please choose your Pokémon."
-        welcome_panel = Panel(welcome_message, border_style="bold", expand=False)
-        self.console.print(welcome_panel)
-
-    def Battle_Results(self):
-        # Create the table
-        table = Table(title="Battle Results")
-
-        table.add_column("Battle No.", justify="right", style="cyan", no_wrap=True)
-        table.add_column("User Power", justify="center", style="green")
-        table.add_column("CPU Power", justify="center", style="red")
-        table.add_column("Status", justify="center", style="green")
-
-        # Add rows to the table
-        for result in self.battle_results:
-            table.add_row(str(result[0]), str(result[1]), str(result[2]), result[3])
-
-        # Print the table
-        self.console.print(table)
-
-class Game:
-    def __init__(self):
-        self.UI = UI()
-        self.user_power = 0
-        self.battle_num = 1
-        self.user_pokemon = ""  # Initialize user_pokemon to avoid reference before assignment
-
-    def Choose_Pokemon(self):
-        count = 0
-        for key in pokemon_char: # showcase pokemon_char in an organized manner
-            count += 1
-            print(f"[{count}] {key}", end="\n" if count % 2 == 0 else "\t") # organize display sa terminal
-        print()
-
-        try: # handle error kapag mali ni input ni user
-            user_choice = int(input("Your Pokemon: "))
-
-            if 1 <= user_choice <= len(pokemon_char):
-                pokemon_list = list(pokemon_char.keys())
-                selected_pokemon = pokemon_list[user_choice - 1]
-                print(f"You chose {selected_pokemon}")
-                return selected_pokemon
-            else:
-                print("Invalid choice. Please select a valid number.")
-                return self.Choose_Pokemon()
-
-        except ValueError:
-            print("Invalid input. Please enter a number.")
-            return self.Choose_Pokemon()
-
-    def Bot_Pokemon(self): # pokemon ng bot kalaban
-        pokemon_list = list(pokemon_char.keys())
-        return random.choice(pokemon_list)
-
-    def calculate_power(self, base_power): # Give additional base power sa pokemon on both side
-        return base_power + random.randint(1, 100)
-
-    def battle(self, user_pokemon, bot_pokemon): # Battle system calculation basta
-        user_base_power = pokemon_char[user_pokemon] # Base power ni user
-        bot_base_power = pokemon_char[bot_pokemon] # Base power ni bot
-
-        # Calculate the final power ng dalawa
-        user_final_power = self.calculate_power(user_base_power)
-        bot_final_power = self.calculate_power(bot_base_power)
-
-        # Determine the result
-        result = "Tie"
-        if user_final_power > bot_final_power:
-            self.user_power += bot_final_power
-            result = "User Wins"
-        elif user_final_power < bot_final_power:
-            result = "Computer Wins"
-
-        # Add battle results to the list
-        self.UI.battle_results.append((self.battle_num, user_final_power, bot_final_power, result))
-
-        # Print the battle details
-        print(f"Battle {self.battle_num}:")
-        print(f"{self.UI.user_name}: {user_pokemon} - Power: {user_final_power}" + " "*20 + f"Bot: {bot_pokemon} - Power: {bot_final_power}")
-        print(f"Result: {result}")
-        print(f"You absorbed {self.user_power} power!")
-        print()
-
-    def Start(self):
-        os.system('cls') # Clear the console
-
-        self.UI.Intro()
-        _In_Game = True
-
-        while _In_Game:
-            if self.user_power == 0 or input("Would you like to select a new Pokémon? (n/c): ").lower() == 'n':
-                user_pokemon = self.Choose_Pokemon()
-            else:
-                user_pokemon = self.user_pokemon
-
-            bot_pokemon = self.Bot_Pokemon()
-            self.battle(user_pokemon, bot_pokemon)
-            self.user_pokemon = user_pokemon
-            self.battle_num += 1
-
-            user_input = input("Do you want to continue battling, choose a new Pokémon, or exit? (c/n/x): ").lower()
-            if user_input == 'x':
-                _In_Game = False
-                print("Thanks for playing! Goodbye!")
-                self.UI.Battle_Results()  # Print the battle results when exiting the game
-            elif user_input == 'n':
+        self.player1 = []
+        self.player2 = []
+        
+        # Pokémon names, health, power, poison and potions
+        self.pokemons = [
+            ["Pikachu", 35, 55, 12, 2],
+            ["Bulbasaur", 45, 49, 15, 3],
+            ["Charmander", 39, 52, 8, 1],
+            ["Squirtle", 44, 48, 10, 2],
+            ["Jigglypuff", 115, 45, 20, 4],
+            ["Gengar", 60, 65, 25, 5],
+            ["Machamp", 90, 130, 14, 3],
+            ["Lapras", 130, 85, 6, 4],
+            ["Psyduck", 50, 52, 9, 2],
+            ["Snorlax", 160, 110, 5, 4],
+        ]
+    
+    # Print out all the names of the Pokémon 
+    def pokemon_list_display(self):
+        for count, pokemon in enumerate(self.pokemons):
+            # Print Pokémon name with appropriate formatting
+            print(f"[{count}] {pokemon[0]}", end="\t\t" if (count % 2 == 0) else "\n")
+        # Ensure a newline after the last row if the number of Pokémon is odd
+        if len(self.pokemons) % 2 != 0:
+            print()
+    
+    # Choose three Pokémon
+    def Choose_Pokemon(self, player_num):
+        chosen_pokemons = []
+        
+        # Player [num] Choose Pokémon
+        while len(chosen_pokemons) < 3:
+            print(f"\tPlayer {player_num}\n")
+            self.pokemon_list_display()
+            
+            # User choices
+            choices = list(map(int, input("Choose 3 Pokémon: ").split()))
+            
+            if len(choices) > 3:
+                print("Please choose up to 3 Pokémon.")
                 continue
-            elif user_input != 'c':
-                print("Invalid input. Exiting the game.")
-                _In_Game = False
-                self.UI.Battle_Results()  # Print the battle results when exiting the game
+            
+            if all(0 <= choice < len(self.pokemons) for choice in choices):
+                chosen_pokemons = choices
+                print(f"\nPlayer {player_num} has chosen: {', '.join(self.pokemons[i][0] for i in chosen_pokemons)}\n")
+                
+                # Add chosen Pokémon to the player list
+                if player_num == 1:
+                    self.player1.extend(self.pokemons[i] for i in chosen_pokemons)
+                elif player_num == 2:
+                    self.player2.extend(self.pokemons[i] for i in chosen_pokemons)
+                
+                # Remove chosen Pokémon from the list
+                self.pokemons = [pokemon for index, pokemon in enumerate(self.pokemons) if index not in chosen_pokemons]
+                return chosen_pokemons  # Return the chosen Pokémon
+            else:
+                print("Invalid choices. Please choose indices from the list.")
+        
 
-# Run the program
+class Display(Mechanics):
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def run(self):
+        self.Choose_Pokemon(1)  # No need to assign the return value
+        self.Choose_Pokemon(2)  # No need to assign the return value
+
 if __name__ == "__main__":
-    _Game = Game()
-    _Game.Start()
+    os.system('cls')  # Clean terminal
+    
+    # Classes
+    Game = Display()
+    Game.run()
+    
+    print("Player 1 Pokémon:", Game.player1)
+    print("Player 2 Pokémon:", Game.player2)
