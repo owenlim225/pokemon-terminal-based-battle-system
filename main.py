@@ -1,6 +1,8 @@
 import random
 import os
-
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
 
 pokemon_char = {
     "Mewtwo": 90,
@@ -15,298 +17,138 @@ pokemon_char = {
     "Jigglypuff": 45,
 }
 
+class UI:
+    def __init__(self):
+        self.console = Console()
+        self.user_name = ""
+        self.battle_results = []
 
+    def Intro(self):
+        content = """
+        Welcome to Pokemon battle!
+        Made by: Sherwin P. Limosnero
+
+        What is your name?
+        """
+
+        # Print the panel using rich
+        panel = Panel(content.strip(), border_style="bold", expand=False)
+        self.console.print(panel)
+
+        self.user_name = input("Your name: ")
+        welcome_message = f"Welcome {self.user_name}! Please choose your Pokémon."
+        welcome_panel = Panel(welcome_message, border_style="bold", expand=False)
+        self.console.print(welcome_panel)
+
+    def Battle_Results(self):
+        # Create the table
+        table = Table(title="Battle Results")
+
+        table.add_column("Battle No.", justify="right", style="cyan", no_wrap=True)
+        table.add_column("User Power", justify="center", style="green")
+        table.add_column("CPU Power", justify="center", style="red")
+        table.add_column("Status", justify="center", style="green")
+
+        # Add rows to the table
+        for result in self.battle_results:
+            table.add_row(str(result[0]), str(result[1]), str(result[2]), result[3])
+
+        # Print the table
+        self.console.print(table)
 
 class Game:
     def __init__(self):
-        self.battle_no = 0
-        self.user_final_power = 0
-        self.current_pokemon = []
-        self.battle_results = []
+        self.UI = UI()
+        self.user_power = 0
+        self.battle_num = 1
+        self.user_pokemon = ""  # Initialize user_pokemon to avoid reference before assignment
 
-        self.computer_final_power = 0
+    def Choose_Pokemon(self):
+        count = 0
+        for key in pokemon_char: # showcase pokemon_char in an organized manner
+            count += 1
+            print(f"[{count}] {key}", end="\n" if count % 2 == 0 else "\t") # organize display sa terminal
+        print()
 
-    # Working ✅
-    def calculate_final_power(self, base_power):
-        randVar = random.randint(1, 10) # mag bigay ng random num sa base_power ng pokemon
-        calculated_power = base_power + randVar 
-        return calculated_power, randVar
+        try: # handle error kapag mali ni input ni user
+            user_choice = int(input("Your Pokemon: "))
 
-    
-    # Working ✅
-    def pokedex(self):
-        os.system('cls') # Taga linis ng terminal
-        print("----- Pokedex ----------")
-        print("")
-        print(f"Pokemon\t\t Base power")
-        for count, (key, value) in enumerate(pokemon_char.items(), start=1):
-            print(f"[{count}] {key}\t:   {value}")
-
-        print("\n\nPress any key to return")
-        print("")
-        print("-------------------------")
-
-
-    # Working ✅
-    def computer_pokemon(self): # pokemon ng bot kalaban
-        pokemon_list = list(pokemon_char.keys())
-        computer_pokemon = random.choice(pokemon_list)
-
-        computer_current_pokemon = computer_pokemon
-        computer_final_power, randVar = self.calculate_final_power(pokemon_char[computer_pokemon])
-
-
-        print(f"Computer choose: {computer_pokemon}")
-
-        computer_pokemon_base_power = pokemon_char[computer_pokemon]
-        print(f"\n\nComputer power: {computer_pokemon} base power + {randVar} blessings")
-        print(f"Computer Final power: {computer_final_power}")
-        
-        self.battle(self.user_final_power, computer_final_power, computer_current_pokemon)
-        return computer_final_power, computer_current_pokemon, computer_pokemon_base_power
-        
-    
-
-    # Working ✅
-    def select_user_pokemon(self):
-        os.system('cls') # Taga linis ng terminal
-        print("----- Pokemon Selection ----------")
-        print("")
-        print("Choose your pokemon\n")
-
-        for count, key in enumerate(pokemon_char.keys(), start=1):
-            print(f"[{count}]\t {key}")
-
-        print("")
-        print("-------------------------")
-        
-        # Papiliin user to choose pokemon of choice
-        try:
-            user_choice = int(input("\nYour Pokemon: ")) 
-
-            # Working ✅
             if 1 <= user_choice <= len(pokemon_char):
                 pokemon_list = list(pokemon_char.keys())
-                user = pokemon_list[user_choice - 1] # return equivalent num na pinili ng user as pokemon
-                print(f"\nYou choose: {user}")
-
-                user_pokemon = pokemon_char[user]  
-                self.current_pokemon = user
-
-
-                user_final_power, randVar = self.calculate_final_power(user_pokemon)
-                self.user_final_power = user_final_power
-
-                print(f"\nYour power: {user_pokemon} base power + {randVar} blessings")
-                print(f"Your Final power: {user_final_power}\n")
-
-                self.computer_pokemon()
-
-                return user_pokemon, user_final_power
-
-            # Working ✅
+                selected_pokemon = pokemon_list[user_choice - 1]
+                print(f"You chose {selected_pokemon}")
+                return selected_pokemon
             else:
-                os.system('cls') # Taga linis ng terminal
-                print("\nNo pokemon found.\n") # pag wala sa pamimilian na int pinili ng user
-                return self.select_user_pokemon()
+                print("Invalid choice. Please select a valid number.")
+                return self.Choose_Pokemon()
 
-        # Working ✅    
         except ValueError:
-            os.system('cls') # Taga linis ng terminal
-            print("\nInvalid input. Please enter a number.") # balik mula simula pag input mali hindi int
-            return self.select_user_pokemon()
-        
-        
+            print("Invalid input. Please enter a number.")
+            return self.Choose_Pokemon()
 
+    def Bot_Pokemon(self): # pokemon ng bot kalaban
+        pokemon_list = list(pokemon_char.keys())
+        return random.choice(pokemon_list)
 
+    def calculate_power(self, base_power): # Give additional base power sa pokemon on both side
+        return base_power + random.randint(1, 100)
 
-    # Working ✅
-    def battle(self, user_final_power, computer_final_power, computer_current_pokemon):
-        self.battle_no += 1
+    def battle(self, user_pokemon, bot_pokemon): # Battle system calculation basta
+        user_base_power = pokemon_char[user_pokemon] # Base power ni user
+        bot_base_power = pokemon_char[bot_pokemon] # Base power ni bot
 
-        
+        # Calculate the final power ng dalawa
+        user_final_power = self.calculate_power(user_base_power)
+        bot_final_power = self.calculate_power(bot_base_power)
 
-    
-        
-        print(f"------------------- Battle {self.battle_no}  -------------------")
-        print("User\t\t\tComputer")
-        print(f"{self.current_pokemon} \tvs\t{computer_current_pokemon}")
+        # Determine the result
+        result = "Tie"
+        if user_final_power > bot_final_power:
+            self.user_power += bot_final_power
+            result = "User Wins"
+        elif user_final_power < bot_final_power:
+            result = "Computer Wins"
 
-        original_computer_power = self.computer_final_power
+        # Add battle results to the list
+        self.UI.battle_results.append((self.battle_num, user_final_power, bot_final_power, result))
 
-        if self.user_final_power >= 100:
-            # Add user power to computer power and adjust user power
-            self.computer_final_power += int(self.user_final_power)
-            self.user_final_power -= int(self.user_final_power * 0.5)
-            
-            print("\nYour Pokémon feel tired from fighting. -50% power lost.\n")
-            print(f"Player final power: {self.user_final_power}")
+        # Print the battle details
+        print(f"Battle {self.battle_num}:")
+        print(f"{self.UI.user_name}: {user_pokemon} - Power: {user_final_power}" + " "*20 + f"Bot: {bot_pokemon} - Power: {bot_final_power}")
+        print(f"Result: {result}")
+        print(f"You absorbed {self.user_power} power!")
+        print()
 
-            # Calculate and apply percentage increase based on the original power
-            computer_add_power_percentage = int(((computer_final_power/self.user_final_power)*100)/4)
-            print(f"\nEnemies start getting stronger. +{computer_add_power_percentage}% power\n")
-            print(f"Computer final power: {computer_final_power}")
-        
-        else:
-            # Restore the computer's original power
-            self.computer_final_power = original_computer_power
-            print("\nNo adjustment needed. Computer power remains the same.\n")
-            print(f"Computer final power: {self.computer_final_power}")
+    def Start(self):
+        os.system('cls') # Clear the console
 
-        print(f"\nuser: {user_final_power}  vs   computer: {computer_final_power}\n")
+        self.UI.Intro()
+        _In_Game = True
 
-        
-        
-
-
-        # SINO PANALO EWAN
-        if user_final_power > computer_final_power:  # User wins
-            result = "User"
-            print(f"\t\t      You win!\n")
-            print("--------------------------------------------------")
-            print("")
-            print(f"Your pokemon gained {computer_final_power} power")
-            print(f"Current final power: {user_final_power + computer_final_power}\n")
-            print("")
-            print("--------------------------------------------------")
-            user_final_power += computer_final_power
-            self.user_final_power = user_final_power
-
-        elif user_final_power < computer_final_power:  # User loses
-            result = "CPU"
-            print(f"\t\t   You Lose.\n")
-            print("--------------------------------------------------")
-            print("")
-            print(f"Your pokemon lost {user_final_power} power")
-            print(f"Computer current final power: {computer_final_power}\n")
-            print("")
-            print("--------------------------------------------------")
-            self.user_final_power = 0
-            computer_final_power += user_final_power
-
-        else:  # Tie
-            result = "-"
-            print(f"\t\t\tIt's a Tie.\n")  # It's a tie
-            print("--------------------------------------------------")
-            print("")
-            print(f"Your power remains")
-            print("")
-            print("--------------------------------------------------")
-
-        # Record the battle result (using the original values before updates)
-        self.battle_results.append((self.battle_no, user_final_power, computer_final_power, result))
-        self.run()
-
-     # Working ✅
-    def battle_records(self):
-        os.system('cls')  # Clear the terminal
-        print("----- Battle records ----------")
-        print("")
-        print("")
-
-        if not self.battle_results:
-            print("You don't have any battle records.")
-
-        else:
-            print("Battle\tUser Power   Computer Power\tWinner")
-
-            for result in self.battle_results:
-                print(f" [{str(result[0])}] \t    {str(result[1])}\t\t   {str(result[2])} \t\t {result[3]}")
-        print("")
-        print("-------------------------")
-
-    # Working ✅    
-    def intro(self):
-        print("\t\tWelcome to pokemon battle!\n\nA terminal based battle system made by Sherwin P. Limosnero from J2S.\n")
-        print("For new players, choose a button to input then press enter.")
-
-        self.run()
-
-    # Working ✅
-    def status(self):
-        os.system('cls') # Taga linis ng terminal
-
-        if not self.current_pokemon:
-            self.current_pokemon = None
-        else:
-            pass
-        
-        print(f"""
------ Player Status ----------
-              
-    Battle \t\t:  {self.battle_no}
-    Current Pokemon\t:  {self.current_pokemon}
-    Current Power\t:  {self.user_final_power}
-    
-              
--------------------------
-
-    Press any key to return
-
-""")
-
-
-    # Working ✅    
-    def run(self):
-        print("""
------ Buttons ----------
-    
-    [C] Continue    
-    [N] New Pokemon
-                        
-    [P] Pokedex
-    [S] Status    
-    [B] Battle Records
-                           
-    [X] Exit
-              
--------------------------
-""")
-        while True:
-            user_input = input().lower()
-
-            if user_input == "c":
-                if self.current_pokemon:
-                    computer_final_power, computer_current_pokemon = self.computer_pokemon()
-                    self.battle(self.user_final_power, computer_final_power, computer_current_pokemon)
-                else:
-                    print("\nPlease choose your pokemon first.\n")
-            
-            elif user_input == "n":
-                self.select_user_pokemon()
-            
-            elif user_input == "p":
-                self.pokedex()
-
-            elif user_input == "s":
-                self.status()
-                
-            elif user_input == "b":
-                self.battle_records()
-
-            elif user_input == "x":
-                print("Thank you for playing")
-                break
+        while _In_Game:
+            if self.user_power == 0 or input("Would you like to select a new Pokémon? (n/c): ").lower() == 'n':
+                user_pokemon = self.Choose_Pokemon()
             else:
-                print("\nInvalid input.")
-                os.system('cls') # Taga linis ng terminal
-                self.run()
-                
+                user_pokemon = self.user_pokemon
 
+            bot_pokemon = self.Bot_Pokemon()
+            self.battle(user_pokemon, bot_pokemon)
+            self.user_pokemon = user_pokemon
+            self.battle_num += 1
 
-        
+            user_input = input("Do you want to continue battling, choose a new Pokémon, or exit? (c/n/x): ").lower()
+            if user_input == 'x':
+                _In_Game = False
+                print("Thanks for playing! Goodbye!")
+                self.UI.Battle_Results()  # Print the battle results when exiting the game
+            elif user_input == 'n':
+                continue
+            elif user_input != 'c':
+                print("Invalid input. Exiting the game.")
+                _In_Game = False
+                self.UI.Battle_Results()  # Print the battle results when exiting the game
 
-
-
-
-
-
-
-    
-        
-
+# Run the program
 if __name__ == "__main__":
     _Game = Game()
-
-    os.system('cls') # Taga linis ng terminal
-    _Game.intro()
+    _Game.Start()
