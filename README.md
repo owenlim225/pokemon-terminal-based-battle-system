@@ -22,3 +22,35 @@ A simple text-based Pokémon battle game where you choose your Pokémon and batt
 
 ## Example Gameplay
 
+Pokemon Battle
+
+[1] Mewtwo [2] Snorlax [3] Machamp [4] Gengar [5] Bulbasaur [6] Squirtle [7] Charmander [8] Eevee [9] Pikachu [10] Jigglypuff
+
+Your Pokémon: 1 Would you like to select a new Pokémon? (n/c): n
+
+yaml
+Copy code
+
+---
+
+## Running the Game
+
+To start the game, simply run the script:
+
+```bash
+python pokemon_battle_game.py
+Code Overview
+intro(): Starts the game and shows the list of Pokémon.
+user_pokemon(): Lets you choose your Pokémon.
+bot_pokemon(): Randomly picks a Pokémon for the bot.
+calculate_power(): Adds a random power boost to the Pokémon's base power.
+battle(): Compares the powers and decides the winner.
+run(): Runs the game loop, letting you battle multiple times.
+Improvements to Consider
+Add a winner announcement after each battle.
+Implement a leveling system for Pokémon.
+Add a more interactive UI.
+License
+MIT License.
+
+Enjoy battling! 🎮
