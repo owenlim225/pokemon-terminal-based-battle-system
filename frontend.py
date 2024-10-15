@@ -8,8 +8,6 @@ from rich.layout import Layout
 from rich.progress import Progress
 from rich.console import Console, Group
 
-console = Console()
-
 import backend as BE
 from backend import GameData
 
@@ -30,49 +28,60 @@ class Frontend:
         self.backend = BE.Backend()
         self.game_data = GameData()
 
-
-
         self.rich_layout = self.make_layout()
-        self.rich_layout["header"].update(header())
-        self.rich_layout["body"].update(self.main_window())
-        self.rich_layout["mechanics"].update(self.mechanics_buttons())
-        self.rich_layout["footer"].update(self.battle_footer())
+        self.rich_layout["header"].update(self.header())
+        self.rich_layout["upper"].update(self.main_window())
+        self.rich_layout["player1"].update(self.player_panel(1))
+        self.rich_layout["player2"].update(self.player_panel(2))
+        self.rich_layout["footer"].update(self.footer())
 
-
-    def header() -> Panel:
+    # ============== Rich Console ==============
+    def header(self) -> Panel:
         grid = Table.grid(expand=True)
         grid.add_column(justify="center")
-        grid.add_row(
-            "[b]🔥🏆Pokemon Battle 2.0!🏆🔥[/b]"
-        )
+        grid.add_row("[b]🔥🏆Pokemon Battle 2.0!🏆🔥[/b]")
         return Panel(grid, border_style="blue")
 
+    def footer(self) -> Panel:
+        grid = Table.grid(expand=True)
+        grid.add_column(justify="center")
+        grid.add_row("[b]🔥 Be the best in the world 🔥[/b]")
+        return Panel(grid, border_style="blue")
 
+    def main_window(self) -> Panel:
+        # The big box in the upper part of the middle section
+        return Panel("Main Battle View", border_style="green", height=25)
 
-
+    def player_panel(self, player_number: int) -> Panel:
+        # Panels for Player 1 and Player 2 at the bottom
+        return Panel(f"Player {player_number} Status", border_style="magenta" if player_number == 1 else "cyan")
 
     def make_layout(self) -> Layout:
         """Define the layout."""
         layout = Layout(name="root")
 
-        # Split layout into three
+        # Header and Footer with a fixed size
         layout.split(
-            Layout(name="header", size=3),
-            Layout(name="main", ratio=3),
-            Layout(name="footer", size=5),
+            Layout(name="header", size=3),   
+            Layout(name="middle", ratio=1), 
+            Layout(name="footer", size=3),   
         )
 
-        # Split the main area into side and body
-        layout["main"].split_row(
-            Layout(name="side", ratio=1, minimum_size=30),
-            Layout(name="body", ratio=3, minimum_size=70),
+        # Split the middle into upper and lower parts (upper part is larger)
+        layout["middle"].split(
+            Layout(name="upper", ratio=3),  # Upper part (larger section)
+            Layout(name="lower", ratio=1),  # Lower part
         )
-        layout["side"].split_column(
-            Layout(name="user_detail"),
-            Layout(name="mechanics"))
+
+        # Split the lower part into Player 1 and Player 2 panels
+        layout["lower"].split_row(
+            Layout(name="player1", ratio=1, minimum_size=30),   # Left panel for Player 1
+            Layout(name="player2", ratio=1, minimum_size=30),   # Right panel for Player 2
+        )
+
         return layout
 
-
+    # ==========================================================
 
 
 
@@ -176,4 +185,6 @@ class Frontend:
     
 
 if __name__ == "__main__":
-    Frontend()
+    console = Console()
+    frontend = Frontend()
+    console.print(frontend.rich_layout)

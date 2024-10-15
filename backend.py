@@ -179,26 +179,7 @@ class Backend:
 
     #===========Battle related funcs===========
 
-    def poison_or_potion(self, user_input) -> None:
-        # Display roulette effect (simulating a rolling effect)
-        print("Roulette spinning...")
-        time.sleep(3)  # Simulating delay for effect
-
-        # Define possible outcomes
-        outcomes = ["poison", "potion"]
-        result = random.choice(outcomes)
-
-        # Calculate the effect based on the outcome
-        if result == "poison":
-            effect_value = -random.randint(1, 5) * user_input
-            print(f"Unlucky! You got poisoned. Your power is reduced by {abs(effect_value)}.")
-        elif result == "potion":
-            effect_value = random.randint(1, 5) * user_input
-            print(f"Lucky! You got a potion. Your health is increased by {effect_value}.")
-
-        # Return the effect value (if needed for further processing)
-        return effect_value
-
+   
 
 
 
