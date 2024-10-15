@@ -98,59 +98,6 @@ class Frontend:
         self.console.clear()
         self.console.print(self.layout)
 
-    def apply_effect(self, result: str, user_input: int, pokemon_name: str, current_power: int, player) -> None:
-        console = Console()
-        if result == "poison":
-            effect_value = -random.randint(1, 5) * user_input
-            new_power = max(0, current_power + effect_value)
-            player.battle_pokemon[2] = new_power
-            console.print(f"Unlucky! 🧙 cast a [bold red]poison spell[/bold red]. {pokemon_name}'s power is reduced by {abs(effect_value)} to {new_power}.")
-        
-        elif result == "potion":
-            effect_value = random.randint(1, 5) * user_input
-            new_power = current_power + effect_value
-            player.battle_pokemon[2] = new_power
-            console.print(f"Lucky! 🧙 cast a [bold green]potion spell[/bold green]. {pokemon_name}'s power is increased by {effect_value} to {new_power}.")
-
-    def poison_or_potion(self, player) -> None:
-        while True:
-            try:
-                accept = input("A 🧙 wants to bless your Pokémon! Accept? (Yes/No): ")
-
-                if accept.lower() == "yes":
-                    user_input = self.get_valid_user_input()
-
-                    self.show_progress("🧙 is casting the spell...", 3)
-
-                    result = random.choice(["poison", "potion"])
-                    pokemon = player.battle_pokemon
-                    pokemon_name, _, current_power = pokemon
-
-                    self.apply_effect(result, user_input, pokemon_name, current_power, player)
-                    break
-
-                elif accept.lower() == "no":
-                    self.console.print("You declined the offer ❌.", style="bold red")
-                    time.sleep(2)
-                    break
-
-                else:
-                    raise ValueError("Invalid input. Please type 'Yes' or 'No'.")
-
-            except ValueError as e:
-                self.console.print(f"[bold red]Error:[/bold red] {e}. Please try again.")
-                time.sleep(2)
-
-    def get_valid_user_input(self) -> int:
-        while True:
-            try:
-                user_input = int(input("🧙 asks you for a number (1-6): "))
-                if 1 <= user_input <= 6:
-                    return user_input
-                else:
-                    raise ValueError("Input must be a number between 1 and 6.")
-            except ValueError as e:
-                self.console.print(f"[bold red]Error:[/bold red] {e}")
 
     def create_pokemon_table(self) -> Table:
         table = Table(title="⭐ Select your pokemon 🔥")
@@ -190,5 +137,72 @@ class Frontend:
 
 
 
+class Blessing:
+    def __init__(self):
+        self.console = Console()
+
+    def apply_effect(self, result: str, user_input: int, pokemon_name: str, current_power: int, player) -> None:
+        console = Console()
+        if result == "poison":
+            effect_value = -random.randint(1, 5) * user_input
+            new_power = max(0, current_power + effect_value)
+            player.battle_pokemon[2] = new_power
+            console.print(f"Unlucky! 🧙 cast a [bold red]poison spell[/bold red]. \n[bold yellow]{pokemon_name}'s[/bold yellow] power is reduced by [bold red]{abs(effect_value)}[/bold red]. \n{current_power} -> {new_power}.")
+        
+        elif result == "potion":
+            effect_value = random.randint(1, 5) * user_input
+            new_power = current_power + effect_value
+            player.battle_pokemon[2] = new_power
+            console.print(f"Lucky! 🧙 cast a [bold green]potion spell[/bold green]. \n[bold yellow]{pokemon_name}'s[/bold yellow] power is increased by [bold green]{effect_value}[/bold green]. \n{current_power} -> {new_power}.")
+
+    def poison_or_potion(self, player) -> None:
+        while True:
+            try:
+                accept = input("A 🧙 wants to bless your Pokémon! Accept? (Yes/No): ")
+
+                if accept.lower() == "yes":
+                    user_input = self.get_valid_user_input()
+
+                    result = random.choice(["poison", "potion"])
+                    pokemon = player.battle_pokemon
+                    pokemon_name, _, current_power = pokemon
+
+                    self.apply_effect(result, user_input, pokemon_name, current_power, player)
+                    break
+
+                elif accept.lower() == "no":
+                    self.console.print("You declined the offer ❌.", style="bold red")
+                    time.sleep(2)
+                    break
+
+                else:
+                    raise ValueError("Invalid input. Please type 'Yes' or 'No'.")
+
+            except ValueError as e:
+                self.console.print(f"[bold red]Error:[/bold red] {e}. Please try again.")
+                time.sleep(2)
+
+    def get_valid_user_input(self) -> int:
+        while True:
+            try:
+                user_input = int(input("🧙 asks you for a number (1-6): "))
+                if 1 <= user_input <= 6:
+                    return user_input
+                else:
+                    raise ValueError("Input must be a number between 1 and 6.")
+            except ValueError as e:
+                self.console.print(f"[bold red]Error:[/bold red] {e}")
+
+
 if __name__ == "__main__":
+    battle = Blessing()
     
+    # Mock player object for testing
+    class MockPlayer:
+        def __init__(self):
+            self.battle_pokemon = ["Pikachu", 100, 50]  # Example Pokémon data: [name, health, power]
+
+    player = MockPlayer()
+
+    # Simulate a call to the poison or potion function
+    battle.poison_or_potion(player)
