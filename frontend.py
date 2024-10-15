@@ -136,24 +136,34 @@ class Frontend:
         self.console.print(table)
 
 
-
 class Blessing:
     def __init__(self):
         self.console = Console()
 
     def apply_effect(self, result: str, user_input: int, pokemon_name: str, current_power: int, player) -> None:
-        console = Console()
-        if result == "poison":
-            effect_value = -random.randint(1, 5) * user_input
-            new_power = max(0, current_power + effect_value)
-            player.battle_pokemon[2] = new_power
-            console.print(f"Unlucky! 🧙 cast a [bold red]poison spell[/bold red]. \n[bold yellow]{pokemon_name}'s[/bold yellow] power is reduced by [bold red]{abs(effect_value)}[/bold red]. \n{current_power} -> {new_power}.")
+        effect_value = random.randint(1, 5) * user_input
         
-        elif result == "potion":
-            effect_value = random.randint(1, 5) * user_input
+        if result == "poison":
+            effect_value = -effect_value
+            new_power = max(0, current_power + effect_value)
+            title = "Poison Effect"
+            border_style = "red"
+            description = f"[bold yellow]{pokemon_name}'s[/bold yellow] power is reduced by [bold red]{abs(effect_value)}[/bold red]."
+        else:  # potion case
             new_power = current_power + effect_value
-            player.battle_pokemon[2] = new_power
-            console.print(f"Lucky! 🧙 cast a [bold green]potion spell[/bold green]. \n[bold yellow]{pokemon_name}'s[/bold yellow] power is increased by [bold green]{effect_value}[/bold green]. \n{current_power} -> {new_power}.")
+            title = "Potion Effect"
+            border_style = "green"
+            description = f"[bold yellow]{pokemon_name}'s[/bold yellow] power is increased by [bold green]{effect_value}[/bold green]."
+        
+        player.battle_pokemon[2] = new_power
+        message = (
+            f"Lucky! 🧙 cast a [bold {border_style}]{title.lower()}[/bold {border_style}]. \n"
+            f"{description} \n{current_power} -> {new_power}."
+        )
+        
+        # Using Text.from_markup to parse markup and center the text
+        centered_message = Text.from_markup(message, justify="center")
+        self.console.print(Panel(centered_message, title=title, border_style=border_style))
 
     def poison_or_potion(self, player) -> None:
         while True:
@@ -171,7 +181,7 @@ class Blessing:
                     break
 
                 elif accept.lower() == "no":
-                    self.console.print("You declined the offer ❌.", style="bold red")
+                    self.console.print(Panel("You declined the offer ❌.", border_style="bold red", title="Offer Declined"))
                     time.sleep(2)
                     break
 
@@ -179,7 +189,7 @@ class Blessing:
                     raise ValueError("Invalid input. Please type 'Yes' or 'No'.")
 
             except ValueError as e:
-                self.console.print(f"[bold red]Error:[/bold red] {e}. Please try again.")
+                self.console.print(Panel(f"[bold red]Error:[/bold red] {e}. Please try again.", border_style="red", title="Input Error"))
                 time.sleep(2)
 
     def get_valid_user_input(self) -> int:
@@ -191,9 +201,10 @@ class Blessing:
                 else:
                     raise ValueError("Input must be a number between 1 and 6.")
             except ValueError as e:
-                self.console.print(f"[bold red]Error:[/bold red] {e}")
+                self.console.print(Panel(f"[bold red]Error:[/bold red] {e}", border_style="red", title="Input Error"))
 
 
+                
 if __name__ == "__main__":
     battle = Blessing()
     
