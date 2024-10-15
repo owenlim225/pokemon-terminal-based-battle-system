@@ -181,7 +181,31 @@ class Backend:
 
    
 
-
+    def pokemon_array_selection(self, player_index: int, pokemon_index: int) -> bool:
+        try:
+            # Check if the pokemon_index is within bounds
+            if pokemon_index < 1 or pokemon_index > len(self.pokemon_array):
+                return True  # Invalid selection
+            
+            # Fetch the selected Pokémon
+            selected_pokemon = self.pokemon_array[pokemon_index - 1]
+            
+            # Check if the Pokémon has already been used
+            if selected_pokemon[3]:  # is_used flag
+                return True  # Already selected, return an error
+            
+            # Assign the Pokémon to the player's selected Pokémon list
+            player = self.game_data.players[player_index + 1]
+            player.selected_pokemon.append(selected_pokemon)
+            
+            # Mark the Pokémon as used
+            selected_pokemon[3] = True  # Update is_used flag to True
+            
+            return False  # Successful selection
+        
+        except IndexError:
+            # Handle any index-related errors
+            return True
 
 
     def main_battle(self) -> None:
@@ -199,9 +223,3 @@ class Backend:
         self.status.show_status_table()
 
 
-
-
-
-
-if __name__ == "__main__":
-    Backend()
