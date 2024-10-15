@@ -23,7 +23,8 @@ class Gameplay:
         # Start the program
         self.main()
 
-
+    def clear_screen(self) -> None:
+        os.system('cls' if os.name == 'nt' else 'clear')
      
     def main(self) -> None:
         # Select pokemon for the two players
@@ -34,10 +35,10 @@ class Gameplay:
             self.all_pokemons_used = self.battle_pokemon_selection()
 
             if self.all_pokemons_used:
-                os.system('cls') # Clear terminal
+                self.clear_screen()
                 
             # Battle function sequence
-            self.backend.battle_preparation()
+            self.backend.poison_or_potion()
             self.backend.main_battle()
             self.backend.post_battle_adjustments()
         
@@ -45,14 +46,40 @@ class Gameplay:
         print("Program Ended")
 
 
+
+
     # Select pokemon array for the two players
     def pokemon_array_selection(self) -> None:
         self.frontend.display_program_info()
-        
+        count = 0
+
+        while count != 2:
+            try: 
+                # Call the method to get the Pokemon info
+                self.frontend.display_pokemon_selection_table(self.backend.get_pokemon_info())
+                
+                # Handle Pokemon selection for the current player
+                selection_error = self.backend.pokemon_array_selection(count)
+
+                # Add delay if there's a selection error
+                if selection_error: 
+                    time.sleep(1)
+                    self.clear_screen()
+                    continue
+
+                # Increment count and clear screen after successful selection
+                count += 1
+                self.clear_screen()
+
+            except ValueError:
+                print("Invalid Input. Please Try Again!")
+                time.sleep(1)
+                self.clear_screen()
 
 
 
-
+    def battle_pokemon_selection(self) -> bool:
+        pass
 
 
 
