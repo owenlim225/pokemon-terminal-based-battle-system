@@ -45,7 +45,6 @@ class Frontend:
         return Panel(f"Player {player_number} Status", border_style="magenta" if player_number == 1 else "cyan")
 
     def make_layout(self) -> Layout:
-        """Define the layout."""
         layout = Layout(name="root")
 
         # Header and Footer with a fixed size
@@ -70,8 +69,8 @@ class Frontend:
         return layout
 
     def display_program_info(self) -> Panel:
-        os.system('cls')
-        
+        os.system('cls')  # Clear the console for a fresh start
+
         # Step 1: Show the loading screen
         with Progress() as progress:
             task = progress.add_task("[green]Loading 🔥🏆Pokemon Battle 2.0!🏆🔥...", total=100)
@@ -79,7 +78,7 @@ class Frontend:
                 progress.update(task, advance=1)
                 time.sleep(5 / 100)  # Total time is 5 seconds
 
-        # Step 2: After loading, update the panel with battle instructions
+        # Step 2: After loading, display battle instructions and wait for user input
         info_text = Text.from_markup("""
         ⚔️[bold yellow]  Battle Instructions:[/] 
                 ❤️ [green]Potion:[/] Boost Power          ☣️ [red]Poison:[/] Reduces Power 
@@ -89,15 +88,21 @@ class Frontend:
                 
                 ❗  [bold yellow]Every battle, current Pokémon's [green]health[/] will [red]decrease[/] by 2 points due to fatigue.[/]
                 ❗  Battle continues until all selected Pokémon from both players have fought.
-                                     
+                                    
         [bold green]Press Enter to Start[/]
         """, justify="center")
 
-        # Create a Panel with the formatted text after loading
-        return Panel(info_text, border_style="green")
+        # Display the battle instructions
+        self.console.print(Panel(info_text, border_style="green"))
+
+        # Wait for user to press Enter
+        input()
+
+        # Proceed after the user presses Enter
+        return Panel(Text("Battle starting!", justify="center"), border_style="green")
+
 
     def run(self):
-        """Runs the main layout."""
         self.console.clear()
         # Display the layout (which includes the loading and program info)
         self.console.print(self.layout)
@@ -107,9 +112,8 @@ class Frontend:
 
 
 
-
+    # Apply either a poison or a potion effect to the player's Pokémon power.
     def poison_or_potion(self, player) -> None:
-        """Apply either a poison or a potion effect to the player's Pokémon power."""
         console = Console()
 
         while True:
